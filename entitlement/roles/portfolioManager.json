@@ -1,0 +1,5 @@
+{
+	"restrictedColumns": [
+			"projection.holistic"
+	]
+}

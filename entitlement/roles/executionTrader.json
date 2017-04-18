@@ -1,0 +1,6 @@
+{
+	"restrictedColumns": [
+			"commission.target",
+			"projection.holistic"
+	]
+}
