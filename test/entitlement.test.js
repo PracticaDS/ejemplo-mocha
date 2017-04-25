@@ -1,3 +1,5 @@
+import "babel-polyfill";
+
 import chai from "chai"
 import chaiAsPromised from "chai-as-promised"
 
@@ -111,6 +113,13 @@ describe("Entitlement module", () => {
 			return promise.should.eventually.have.property("account").equal("TG00")
 		})
 
+
+		it("If i call it twice with the same user it should return two entitlements with the same username", async() => {
+			const entitlement1 = await entitlementFactory.create("claudio");
+			const entitlement2 = await entitlementFactory.create("claudio");
+			entitlement1.username.should.be.equal(entitlement2.username);
+			entitlement1.username.should.be.equal("claudio");
+		})
 
 
 	})
