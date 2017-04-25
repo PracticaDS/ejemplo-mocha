@@ -8,14 +8,23 @@ import path from "path";
 
 export class Entitlement {
 
-	constructor(username, profile, restrictedFields) {
+	constructor(username, profile, restrictedFields, restrictedFieldsObserver) {
 		this.username = username;
 		this.profile = profile;
-		this.restrictedFields = restrictedFields || [];
+		this._restrictedFields = restrictedFields || [];
+		this.restrictedFieldsObserver = restrictedFieldsObserver;
 	}
 
 	get account() {
 		return this.profile.account;
+	}
+
+	set restrictedFields(fields) {
+		this.restrictedFieldsObserver && this.restrictedFieldsObserver(this._restrictedFields, fields);
+		this._restrictedFields = fields;
+	}
+	get restrictedFields() {
+		return this._restrictedFields;
 	}
 
 	/**

@@ -1,11 +1,16 @@
 import chai from "chai"
 import chaiAsPromised from "chai-as-promised"
 
+import sinon from "sinon"
+import sinonChai from "sinon-chai"
+
 import {Entitlement, entitlementFactory} from "../entitlement"
 import request from "request-promise-native";
 
 const should = chai.should()
+chai.use(sinonChai)
 chai.use(chaiAsPromised)
+
 
 describe("Entitlement module", () => {
 
@@ -77,8 +82,22 @@ describe("Entitlement module", () => {
 						otherStuff: {}
 					}
 				]);
-			})
+			});
 
+			it("Should notify restrictedFieldsObserver when restricted fields change", () => {
+				const observer = sinon.spy();
+
+				const ent = new Entitlement("claudio", {}, [
+					"projection"
+				], observer);
+
+				ent.restrictedFields = ["stuff"];
+				ent.restrictedFields = ["banana", "frutilla"];
+
+				observer.should.have.been.calledTwice;
+				observer.firstCall.should.have.been.calledWith(["projection"], ["stuff"])
+				observer.secondCall.should.have.been.calledWith(["stuff"], ["banana", "frutilla"])
+			});
 		})
 
 	})
@@ -111,14 +130,12 @@ describe("Entitlement module", () => {
 			return promise.should.eventually.have.property("account").equal("TG00")
 		})
 
-
 		it("If i call it twice with the same user it should return two entitlements with the same username", async() => {
 			const entitlement1 = await entitlementFactory.create("claudio");
 			const entitlement2 = await entitlementFactory.create("claudio");
 			entitlement1.username.should.be.equal(entitlement2.username);
 			entitlement1.username.should.be.equal("claudio");
 		})
-
 
 	})
 
