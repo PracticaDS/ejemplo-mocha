@@ -7,7 +7,7 @@
   "main": "app.js",
   "scripts": {
     "start": "babel-node -- app.js",
-    "test": "mocha test/* --compilers js:babel-core/register"
+    "test": "mocha test/* --compilers js:babel-core/register --require babel-polyfill"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
