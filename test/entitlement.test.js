@@ -106,18 +106,15 @@ describe("Entitlement module", () => {
 		let originalGet;
 
 		before(() => {
-			originalGet = request.get;
-			request.get = url => {
-				return Promise.resolve(JSON.stringify({
-					username: "claudio",
-					role: "executionTrader",
-					account: "TG00"
-				}))
-			}
+			sinon.stub(request, "get").resolves(JSON.stringify({
+				username: "claudio",
+				role: "executionTrader",
+				account: "TG00"
+			}));
 		})
 
 		after(() => {
-			request.get = originalGet;
+			request.get.restore();
 		})
 
 		it("Should create an entitlement object", () => {
