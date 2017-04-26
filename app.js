@@ -1,5 +1,4 @@
 "use strict";
-
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
@@ -31,9 +30,4 @@ app.use((err, req, res, next) => {
 	res.sendStatus(500);
 });
 
-// Start server
-const port = 8888;
-const host = "localhost";
-app.server = app.listen(port, host, function() {
-	logger.info("Express server listening on port %d, host %s", port, host);
-});
+export default app;
