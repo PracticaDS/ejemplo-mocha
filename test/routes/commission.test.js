@@ -19,7 +19,7 @@ describe("Commission router", () => {
 		mongoose.connect('mongodb://localhost/commissions')
 	})
 
-	before("Mock externalal service", () => {
+	before("Mock external service", () => {
 		sinon.stub(httpRequest, "get").resolves(JSON.stringify({
 			username: "claudio",
 			role: "executionTrader",
@@ -53,6 +53,8 @@ describe("Commission router", () => {
 			body.should.have.property("account", "TG01")
 			body.should.have.property("_id")
 		})
+
+		//Needs more tests!
 
 	})
 
