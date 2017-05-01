@@ -1,13 +1,43 @@
 import chai from "chai"
+import sinon from "sinon"
 import chaiAsPromised from "chai-as-promised"
 
 import request from "supertest"
+import httpRequest from "request-promise-native";
 import app from "../../app"
+
+import mongoose from 'mongoose'
+import mockgoose from 'mockgoose'
 
 const should = chai.should()
 chai.use(chaiAsPromised)
 
 describe("Commission router", () => {
+
+	before("Mock mongoose", async() => {
+		await mockgoose(mongoose)
+		mongoose.connect('mongodb://localhost/commissions')
+	})
+
+	before("Mock externalal service", () => {
+		sinon.stub(httpRequest, "get").resolves(JSON.stringify({
+			username: "claudio",
+			role: "executionTrader",
+			account: "TG01"
+		}));
+	})
+
+	after("Restore external service", () => {
+		httpRequest.get.restore();
+	})
+
+	after("Restore mongoose", done => {
+  	mongoose.unmock(done);
+	});
+
+	afterEach("Reset mock mongo database", done => {
+	  mockgoose.reset(done);
+	});
 
 	describe("POST /commission/pay", () => {
 

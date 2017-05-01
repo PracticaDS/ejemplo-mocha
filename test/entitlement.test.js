@@ -5,12 +5,11 @@ import sinon from "sinon"
 import sinonChai from "sinon-chai"
 
 import {Entitlement, entitlementFactory} from "../entitlement"
-import request from "request-promise-native";
+import httpRequest from "request-promise-native";
 
 const should = chai.should()
 chai.use(sinonChai)
 chai.use(chaiAsPromised)
-
 
 describe("Entitlement module", () => {
 
@@ -106,7 +105,7 @@ describe("Entitlement module", () => {
 		let originalGet;
 
 		before(() => {
-			sinon.stub(request, "get").resolves(JSON.stringify({
+			sinon.stub(httpRequest, "get").resolves(JSON.stringify({
 				username: "claudio",
 				role: "executionTrader",
 				account: "TG00"
@@ -114,7 +113,7 @@ describe("Entitlement module", () => {
 		})
 
 		after(() => {
-			request.get.restore();
+			httpRequest.get.restore();
 		})
 
 		it("Should create an entitlement object", () => {

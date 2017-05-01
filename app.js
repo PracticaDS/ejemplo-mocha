@@ -7,9 +7,6 @@ import fs from "fs";
 import { logger, loggerMiddleware } from "./logging";
 import { entitlementMiddleware } from "./entitlement";
 
-import mongoose from 'mongoose'
-mongoose.connect('mongodb://localhost/commissions')
-
 const app = express();
 app.use(loggerMiddleware);
 app.use(entitlementMiddleware);

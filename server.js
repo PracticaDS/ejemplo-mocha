@@ -2,6 +2,10 @@
 
 import app from "./app"
 
+// Connect here
+import mongoose from 'mongoose'
+mongoose.connect('mongodb://localhost/commissions')
+
 // Start server
 const port = 8888;
 const host = "localhost";
