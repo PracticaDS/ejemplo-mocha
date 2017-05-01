@@ -1,11 +1,11 @@
 import chai from "chai"
 import chaiAsPromised from "chai-as-promised"
 
+import { setupUserService } from "../setup"
 import sinon from "sinon"
 import sinonChai from "sinon-chai"
 
-import {Entitlement, entitlementFactory} from "../entitlement"
-import httpRequest from "request-promise-native";
+import {Entitlement, entitlementFactory} from "../../entitlement"
 
 const should = chai.should()
 chai.use(sinonChai)
@@ -104,17 +104,7 @@ describe("Entitlement module", () => {
 	describe("The entitlementFactory object", () => {
 		let originalGet;
 
-		before(() => {
-			sinon.stub(httpRequest, "get").resolves(JSON.stringify({
-				username: "claudio",
-				role: "executionTrader",
-				account: "TG00"
-			}));
-		})
-
-		after(() => {
-			httpRequest.get.restore();
-		})
+		setupUserService();
 
 		it("Should create an entitlement object", () => {
 			const promise = entitlementFactory.create("claudio")
@@ -123,7 +113,7 @@ describe("Entitlement module", () => {
 
 		it("Should create an entitlement object with right account", () => {
 			const promise = entitlementFactory.create("claudio")
-			return promise.should.eventually.have.property("account").equal("TG00")
+			return promise.should.eventually.have.property("account").equal("TG01")
 		})
 
 		it("If i call it twice with the same user it should return two entitlements with the same username", async() => {
